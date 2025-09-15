@@ -1,4 +1,7 @@
 const app = document.getElementById("app") as HTMLElement;
-import createNewGame from "./createGame";
+import renderAll from "./createGame";
+import gameLogic from "./gameLogic";
 
-createNewGame(app);
+renderAll(app);
+
+gameLogic();
