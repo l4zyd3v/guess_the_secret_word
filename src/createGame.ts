@@ -27,9 +27,11 @@ const renderLetterBoxes = () => {
 
   for (let i = 0; i < NUMBER_OF_ROWS; i++) {
     const row = createElement("div", ["row"]);
+    row.setAttribute("data-filled", "false");
 
     for (let j = 0; j < LETTER_BOX_PER_ROW; j++) {
       const letterBox = createElement("div", ["letterBox"]);
+      letterBox.setAttribute("data-filled", "false");
       const randomLetter = String.fromCharCode(
         97 + Math.floor(Math.random() * 26),
       ); // 'a' to 'z'
@@ -116,7 +118,7 @@ const renderkeyboardRow = (rowOfKeys: string[], className: string) => {
     const enter = "\u23CE";
     const backspace = "\u232B";
 
-    const key = createElement("div", [
+    const key = createElement("button", [
       `keyboard__key-${rowOfKeys[i]}`,
       "keyboard__key",
     ]);
@@ -125,10 +127,12 @@ const renderkeyboardRow = (rowOfKeys: string[], className: string) => {
     }
 
     if (letter === "enter") {
+      key.id = "enter";
       key.textContent = enter;
     }
 
     if (letter === "backspace") {
+      key.id = "backspace";
       key.textContent = backspace;
     }
 
