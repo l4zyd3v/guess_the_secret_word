@@ -1,28 +1,18 @@
-import "./style.css";
-const NUMBER_OF_ROWS = 6;
-const LETTER_BOX_PER_ROW = 5;
-const HEADER_TEXT = "Wordle";
-const GRID_COLOR_DELAY = 70;
+import { createElement } from "./utils";
 
-type CreateElement = <K extends keyof HTMLElementTagNameMap>(
-  tag: K,
-  classList?: string[],
-  id?: string,
-  classNameTimeOut?: number | undefined,
-) => HTMLElementTagNameMap[K];
+type KeyboardLayout = { [row: string]: string[] };
 
-const createElement: CreateElement = (tag, classList, id) => {
-  const el = document.createElement(tag);
-
-  if (classList) {
-    el.classList.add(...classList);
-  }
-
-  if (id) el.id = id;
-  return el as HTMLElementTagNameMap[typeof tag];
+const qwertyKeyboard: KeyboardLayout = {
+  firstRow: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
+  secondRow: ["a", "s", "d", "f", "f", "g", "h", "j", "k", "l", "æ", "ø"],
+  thirdRow: ["enter", "z", "x", "c", "v", "b", "n", "m", "backspace"],
 };
 
-const renderLetterBoxes = () => {
+const renderLetterBoxes = (
+  NUMBER_OF_ROWS: number,
+  LETTER_BOX_PER_ROW: number,
+  GRID_COLOR_DELAY: number,
+) => {
   const letterBoxContainer = createElement("section", ["letterBoxContainer"]);
 
   for (let i = 0; i < NUMBER_OF_ROWS; i++) {
@@ -32,9 +22,6 @@ const renderLetterBoxes = () => {
     for (let j = 0; j < LETTER_BOX_PER_ROW; j++) {
       const letterBox = createElement("div", ["letterBox"]);
       letterBox.setAttribute("data-filled", "false");
-      const randomLetter = String.fromCharCode(
-        97 + Math.floor(Math.random() * 26),
-      ); // 'a' to 'z'
 
       setTimeout(
         () => {
@@ -84,7 +71,7 @@ const showError = () => {
   document.body.appendChild(wrapper);
 };
 
-const createHeader = () => {
+const createHeader = (HEADER_TEXT: string) => {
   const header = createElement("header", ["header"]);
   const h1 = createElement("h1");
   h1.textContent = HEADER_TEXT;
@@ -97,14 +84,6 @@ const createMain = () => {
   const main = createElement("main", ["main"]);
 
   return main;
-};
-
-type KeyboardLayout = { [row: string]: string[] };
-
-const qwertyKeyboard: KeyboardLayout = {
-  firstRow: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å"],
-  secondRow: ["a", "s", "d", "f", "f", "g", "h", "j", "k", "l", "æ", "ø"],
-  thirdRow: ["enter", "z", "x", "c", "v", "b", "n", "m", "backspace"],
 };
 
 const renderkeyboardRow = (rowOfKeys: string[], className: string) => {
@@ -142,7 +121,7 @@ const renderkeyboardRow = (rowOfKeys: string[], className: string) => {
   return rowContainer;
 };
 
-const renderKeyboard = (qwertyKeyboard: KeyboardLayout) => {
+const renderKeyboard = () => {
   const keyboardContainer = createElement("section", ["keyboard"]);
 
   const { firstRow, secondRow, thirdRow } = qwertyKeyboard;
@@ -160,21 +139,10 @@ const renderKeyboard = (qwertyKeyboard: KeyboardLayout) => {
   return keyboardContainer;
 };
 
-const renderAll = (app: HTMLElement | null) => {
-  if (!app) {
-    showError();
-    return;
-  }
-  app.innerHTML = ""; // idempotent
-
-  const header = createHeader();
-  const main = createMain();
-  const letterBoxes = renderLetterBoxes();
-  const keyboard = renderKeyboard(qwertyKeyboard);
-
-  main.append(letterBoxes, keyboard);
-
-  app.append(header, main);
+export {
+  renderLetterBoxes,
+  showError,
+  createHeader,
+  createMain,
+  renderKeyboard,
 };
-
-export default renderAll;
