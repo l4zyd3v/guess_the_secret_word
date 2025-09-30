@@ -70,6 +70,16 @@ main {
   border-radius: 20%;
 }
 
+.green {
+  background: green;
+}
+.yellow {
+  background: yellow;
+}
+.gray {
+  backgrround: grey;
+}
+
 .keyboard {
   max-width: 90vw;
 }
